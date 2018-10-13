@@ -1,4 +1,3 @@
-'use strict';
 // clicked variable for check start button click
 let clicked = false;
 // msec,secs,msecs variables for timer
@@ -61,7 +60,7 @@ starBtn.addEventListener('click', function () {
         score = 0;
         level = 1;
         // timer function
-        let Timer = setInterval(function Time() {
+        Timer = setInterval(function Time() {
             msecs++;
             if (msecs === 10) {
                 secs++;
