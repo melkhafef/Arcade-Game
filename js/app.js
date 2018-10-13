@@ -1,5 +1,5 @@
 // clicked variable for check start button click
-var clicked = false;
+let clicked = false;
 // msec,secs,msecs variables for timer
 let msecs = 0;
 let secs = 0;
@@ -12,17 +12,19 @@ let level = 1;
 let hearts = 3;
 // index of player array to chose specific player 
 let index = 0;
+// flag used for return y coordinate for enemies to initial
+let count = 1;
 // take button from html to interacte with it.
-let starBtn = document.querySelector('button')
+const starBtn = document.querySelector('button')
 // array of players you can play with one of them
-let players = ['images/char-boy.png',
+const players = ['images/char-boy.png',
     'images/char-cat-girl.png',
     'images/char-horn-girl.png',
     'images/char-pink-girl.png',
     'images/char-princess-girl.png'
 ]
 // array of prizes you can collecte
-var prizes = ['images/Gem Blue.png',
+const prizes = ['images/Gem Blue.png',
     'images/Gem Green.png',
     'images/Gem Orange.png',
     'images/Heart.png',
@@ -30,18 +32,18 @@ var prizes = ['images/Gem Blue.png',
     'images/Star.png'
 ]
 // array of values that prizes can take in x coordinate
-prizeX = [20, 121, 222, 323, 424];
+const prizeX = [20, 121, 222, 323, 424];
 // array of values that prizes can take in y coordinate
-prizeY = [105, 188, 271];
+const prizeY = [105, 188, 271];
 /* Predefine the variables we'll be using within this scope,
  * create the canvas element, grab the 2D context for that canvas
  * set the canvas elements height/width and add it to the DOM.
  */
-var doc = window.document,
-    win = window.window,
-    canvas = doc.createElement('canvas'),
-    ctx = canvas.getContext('2d'),
-    lastTime;
+const doc = window.document
+const win = window.window
+const canvas = doc.createElement('canvas')
+const ctx = canvas.getContext('2d')
+let lastTime;
 canvas.width = 505;
 canvas.height = 606;
 doc.body.appendChild(canvas);
@@ -96,9 +98,9 @@ Enemy.prototype.update = function (dt) {
     //if you in play (hearts more than zero)
     if (hearts > 0) {
         // declare random value
-        var random = Math.random();
+        let random = Math.random();
         // declare the only three values can enemy take in y coordinate
-        var yAxis = [62, 145, 228];
+        const yAxis = [62, 145, 228];
         // give random x coordinate for each enemy
         this.x = this.x + random * this.speed * dt;
         // if enemy reach the end of play screen
@@ -112,25 +114,32 @@ Enemy.prototype.update = function (dt) {
             this.speed = Math.random() * (200 + level * 5) + 150 + level * 80;
         }
         // if player collision into enemy
-        if (this.x >= player.x - 83 && player.y + 14 == this.y && player.x > this.x) {
+        if (this.x >= player.x - 62 && player.y + 14 == this.y && player.x > this.x) {
             // decrease hearts 
             hearts--;
             // return player to the initial position
-            player.x = 202;
-            player.y = 380;
+            player.reset();
         }
         // if you lose (your hearts equal zero)
     } else {
         // return enemies to initial state.
-        bug1.x = 0;
-        bug2.x = 0;
-        bug3.x = 0;
-        bug1.y = 62;
-        bug2.y = 145;
-        bug3.y = 228;
-        bug1.speed = Math.random() * 200 + 150;
-        bug2.speed = Math.random() * 200 + 150;
-        bug3.speed = Math.random() * 200 + 150;
+        this.x = 0;
+        // when enemy is bug1
+        if (count === 1) {
+            this.y = 62;
+            count++;
+        }
+        // when enemy is bug2
+        else if (count === 2) {
+            this.y = 145;
+            count++;
+        }
+        // when enemy is bug3
+        else if (count === 3) {
+            this.y = 228;
+            count = 1;
+        }
+        this.speed = Math.random() * 200 + 150;
     }
 };
 
@@ -154,8 +163,7 @@ var Player = function (sprite, x, y) {
 // update player position to initial if hearts qual zero .
 Player.prototype.update = function () {
     if (hearts === 0) {
-        this.x = 202;
-        this.y = 380;
+        this.reset();
     }
 }
 // draw player image
@@ -175,8 +183,7 @@ Player.prototype.handleInput = function (key) {
                 // increase score
                 score += 20;
                 // return player to initial position
-                this.x = 202;
-                this.y = 380;
+                this.reset();
             }
             // one move to up 
             else {
@@ -212,6 +219,10 @@ Player.prototype.handleInput = function (key) {
             }
         }
     }
+}
+Player.prototype.reset = function () {
+    this.x = 202;
+    this.y = 380;
 }
 // collections constructor function
 var Collections = function (sprite, x, y) {
