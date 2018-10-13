@@ -61,7 +61,7 @@ starBtn.addEventListener('click', function () {
         score = 0;
         level = 1;
         // timer function
-        Timer = setInterval(function Time() {
+        let Timer = setInterval(function Time() {
             msecs++;
             if (msecs === 10) {
                 secs++;
