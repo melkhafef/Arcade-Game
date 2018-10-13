@@ -1,3 +1,4 @@
+'use strict';
 // clicked variable for check start button click
 let clicked = false;
 // msec,secs,msecs variables for timer
