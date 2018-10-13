@@ -1,3 +1,4 @@
+'use strict';
 // clicked variable for check start button click
 let clicked = false;
 // msec,secs,msecs variables for timer
@@ -14,6 +15,8 @@ let hearts = 3;
 let index = 0;
 // flag used for return y coordinate for enemies to initial
 let count = 1;
+// declare Timer
+let Timer;
 // take button from html to interacte with it.
 const starBtn = document.querySelector('button')
 // array of players you can play with one of them
